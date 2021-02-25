@@ -1,4 +1,5 @@
 ##RIDHO##
+##RIDHO##
 	# 1 - Import Library
 import pygame
 from pygame.locals import *
@@ -10,8 +11,8 @@ width, height = 640, 480 # Ukuran Layar game
 screen = pygame.display.set_mode((width, height))
 	# Key 
 keys = {
-    "left": False, 
-    "right": False,
+    "top": False, 
+    "bottom": False,
 }
 running = True
 Pesawatpos = [140, 240] # Posisi Pesawat
@@ -48,9 +49,6 @@ SuaraPeluru.set_volume(0.05)
 pygame.mixer.music.load("resources/audio/moonlight.wav")
 pygame.mixer.music.play(-1, 0.0)
 pygame.mixer.music.set_volume(0.25)
-
-
-
 ##AYUDYA##
 ## 4 - Game Loop
 while(running):
@@ -75,8 +73,8 @@ while(running):
 	    # posisi muncul Pelurunya
     for bullet in Pelurunya:
         Peluru_index = 0
-        velx=math.cos(bullet[0])*20
-        vely=math.sin(bullet[0])*20
+        velx=math.cos(bullet[0])*10
+        vely=math.sin(bullet[0])*10
         bullet[1]+=velx
         bullet[2]+=vely
         if bullet[1] < -64 or bullet[1] > width or bullet[2] < -64 or bullet[2] > height:
@@ -86,9 +84,6 @@ while(running):
         for projectile in Pelurunya:
             new_Peluru = pygame.transform.rotate(Peluru, 360-projectile[0]*57.29)
             screen.blit(new_Peluru, (projectile[1], projectile[2]))
-
-
-
 ##YUSRIYAH##
     # Buat Musuh
     # Waktu saat musuh akan muncul
@@ -98,8 +93,7 @@ while(running):
         enemies.append([width, randint(25, height-32)])
         # waktu kemuculan
         enemy_timer = randint(1, 100)
-
-    index = 5
+    index = 0
     for enemy in enemies:
         	# Musuh bergerak dengan kecepatan 1.5 pixel ke kiri
         enemy[0] -= 1.5
@@ -136,8 +130,6 @@ while(running):
     for enemy in enemies:
         screen.blit(Musuh, enemy)
 	
-
-
 ##JENNY##
 	    # Menampilkan health bar
     screen.blit(healthbar, (5,5))
@@ -160,27 +152,27 @@ while(running):
         if event.type == pygame.QUIT:
             pygame.quit()
             exit(0)
-            # Suara Menembak
+            # Menembak
         if event.type == pygame.MOUSEBUTTONDOWN:
             Pelurunya.append([angle, new_Pesawatpos[0]+32, new_Pesawatpos[1]+32])
             SuaraPeluru.play()
             # tombol untuk menggerakkan pesawat
         if event.type == pygame.KEYDOWN:
             if event.key == K_w:
-                keys["left"] = True
+                keys["top"] = True
             elif event.key == K_s:
-                keys["right"] = True
+                keys["bottom"] = True
         if event.type == pygame.KEYUP:
             if event.key == K_w:
-                keys["left"] = False
+                keys["top"] = False
             elif event.key == K_s:
-                keys["right"] = False
+                keys["bottom"] = False
     	# Akhir Perulangan
     	# Gerakan pesawat
-    if keys["left"]:
-        Pesawatpos[0] -= 5 # kurangi nilai y
-    elif keys["right"]:
-        Pesawatpos[0] += 5 # tambah nilai y
+    if keys["top"]:
+        Pesawatpos[1] -= 5 # kurangi nilai y
+    elif keys["bottom"]:
+        Pesawatpos[1] += 5 # tambah nilai y
         # keadaan jika waktu habis
     if pygame.time.get_ticks() > countdown_timer:
         running = False
@@ -189,9 +181,6 @@ while(running):
         running = False
         exitcode = EXIT_CODE_GAME_OVER
 # - End of Game Loop
-
-
-
 ##IQBAL##
 	# 5 - Tampilan menang dan kalah
 if exitcode == EXIT_CODE_GAME_OVER:
@@ -202,9 +191,8 @@ else:
 text = font.render("Total Score: {}".format(score), True, (255, 255, 255))
 textRect = text.get_rect()
 textRect.centerx = screen.get_rect().centerx
-textRect.centery = screen.get_rect().centery + 400
+textRect.centery = screen.get_rect().centery + 24
 screen.blit(text, textRect)
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
